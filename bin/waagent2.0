@@ -514,6 +514,13 @@ class AbstractDistro(object):
             fs = Config.get("ResourceDisk.Filesystem")
             if fs == None:
                 fs = "ext3"
+#My changes: create flag variable if exists in confg
+	    flag = Config.get("ResourceDisk.NoDev")
+	    if flag == None:
+		flag = ""
+	    else:
+		flag = "-o nodev"
+#End changes
 
             partition = device + "1"
 
@@ -537,19 +544,21 @@ class AbstractDistro(object):
                 if existingFS == "7" and fs != "ntfs":
                     Run("sfdisk -c " + device + " 1 83")
                     Run("mkfs." + fs + " " + partition)
-            if Run("mount " + partition + " " + mountpoint, chk_err=False):
+#My changes: add flag to Run() string with space.
+            if Run("mount " + flag + " " +  partition + " " + mountpoint, chk_err=False):
                 #If mount failed, try to format the partition and mount again
                 Warn("Failed to mount resource disk. Retry mounting.")            
                 Run("mkfs." + fs + " " + partition + " -F")
-                if Run("mount " + partition + " " + mountpoint):
+#My changes: add flag to Run() string with space. 
+                if Run("mount " + flag + " " +  partition + " " + mountpoint):
                     Error("ActivateResourceDisk: Failed to mount resource disk (" + partition + ").")
                     return
-            Log("Resource disk (" + partition + ") is mounted at " + mountpoint + " with fstype " + fs)
+            Log("Resource disk (" + partition + ") is mounted at " + mountpoint 
+		+ " with fstype " + fs + ".")
 
         #Create README file under the root of resource disk
         SetFileContents(os.path.join(mountpoint,README_FILENAME), README_FILECONTENT)
-        DiskActivated = True
-
+        DiskActivated = True 
         #Create swap space
         swap = Config.get("ResourceDisk.EnableSwap")
         if swap == None or swap.lower().startswith("n"):
