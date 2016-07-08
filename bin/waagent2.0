@@ -517,7 +517,7 @@ class AbstractDistro(object):
 	    flag = Config.get("ResourceDisk.NoDev")
 	    if flag == None:
 		flag = ""
-	    else:
+	    elif flag = "y" or flag.lower().startswith("y"):
 		flag = "-o nodev"
 
             partition = device + "1"
