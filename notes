@@ -1,0 +1,22 @@
+#### config notes
+#Set nodev Mount flag for better security.
+ResourceDisk.NoDev=n
+
+
+
+#### waagent notes
+line 488:
+
+flag = Config.get("ResourceDisk.NoDev")
+
+if Flag = "y" or flag.lower().startswith("Y"):
+	Flag = "-o nodev"
+
+line 540:
+
+if Run("mount " + Flag + partition +  " " + mountpoint, chk_err=False):
+
+line 544:
+#Run again if failed
+
+if Run("mount " + Flag + partition + " " + mountpint):
