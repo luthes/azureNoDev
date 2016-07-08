@@ -514,13 +514,11 @@ class AbstractDistro(object):
             fs = Config.get("ResourceDisk.Filesystem")
             if fs == None:
                 fs = "ext3"
-#My changes: create flag variable if exists in confg
 	    flag = Config.get("ResourceDisk.NoDev")
 	    if flag == None:
 		flag = ""
 	    else:
 		flag = "-o nodev"
-#End changes
 
             partition = device + "1"
 
@@ -544,12 +542,10 @@ class AbstractDistro(object):
                 if existingFS == "7" and fs != "ntfs":
                     Run("sfdisk -c " + device + " 1 83")
                     Run("mkfs." + fs + " " + partition)
-#My changes: add flag to Run() string with space.
             if Run("mount " + flag + " " +  partition + " " + mountpoint, chk_err=False):
                 #If mount failed, try to format the partition and mount again
                 Warn("Failed to mount resource disk. Retry mounting.")            
                 Run("mkfs." + fs + " " + partition + " -F")
-#My changes: add flag to Run() string with space. 
                 if Run("mount " + flag + " " +  partition + " " + mountpoint):
                     Error("ActivateResourceDisk: Failed to mount resource disk (" + partition + ").")
                     return
