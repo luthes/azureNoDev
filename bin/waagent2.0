@@ -128,6 +128,7 @@ ResourceDisk.Filesystem=ext4            # Typically ext3 or ext4. FreeBSD images
 ResourceDisk.MountPoint=/mnt/resource   #
 ResourceDisk.EnableSwap=n               # Create and use swapfile on resource disk.
 ResourceDisk.SwapSizeMB=0               # Size of the swapfile.
+ResourceDisk.Flag=n			# Set -o nodev flag on partition
 
 LBProbeResponder=y                      # Respond to load balancer probes if requested by Azure.
 
